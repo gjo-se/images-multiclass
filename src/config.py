@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
 @dataclass
-class TrainConfig:
-    batch_size: int = 64
+class Config:
+    seed: int = 13
+    batch_size: int = 32
     lr: float = 1e-3
     epochs: int = 10
     num_classes: int = 10

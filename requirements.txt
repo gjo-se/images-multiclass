@@ -1,3 +1,5 @@
-tensorflow
+# tensorflow
+# tensorflow-macos tensorflow-metal
 numpy
 matplotlib
+tensorflow
