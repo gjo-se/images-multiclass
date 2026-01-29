@@ -10,7 +10,7 @@ import sys
 class SetupEnvironment:
     def __init__(self):
         self.seed = Config().seed
-        self.install_requirements()
+        # self.install_requirements()
         self.set_seed(self.seed)
         self.print_last_run_notebook()
         self.print_tf_version()
