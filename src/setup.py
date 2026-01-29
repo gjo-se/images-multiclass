@@ -34,9 +34,9 @@ class SetupEnvironment:
         print(f"Notebook last run (end-to-end): {datetime.datetime.now()}")
 
     @staticmethod
-    def install_requirements(requirements_path="../../requirements.txt"):
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", requirements_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # def install_requirements(requirements_path="../../requirements.txt"):
+    #     subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    #     subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", requirements_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     # Ausführen, wenn du in Google Colab arbeitest:
     # try:
