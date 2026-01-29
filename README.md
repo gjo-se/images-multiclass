@@ -1,22 +1,48 @@
-# Fragen
-- Wo liegen die Daten? (lokal, colab?)
-
-# Lokal in PyCharm:
-python src/train.py
-
 # GIT einrichten
 - lokal
 - remote
-- push
+
+# Sync ipynb <=> py
+
+Um Jupyter-Notebooks (.ipynb) und Python-Skripte (.py) synchron zu halten, wird [Jupytext](https://github.com/mwouts/jupytext) verwendet:
+
+1. **Jupytext installieren**
+   ```zsh
+   pip install jupytext
+   ```
+
+2. **Pairing einrichten** (z.B. percent-Format):
+   ```zsh
+   jupytext --set-formats ipynb,py:percent notebooks/experiments/00_baseline.ipynb
+   jupytext --set-formats ipynb,py:percent notebooks/experiments/*.ipynb
+   ```
+   Dadurch wird automatisch eine .py-Datei erstellt und das Pairing in den Metadaten des Notebooks hinterlegt.
+
+3. **Synchronisieren** (beide Richtungen):
+   ```zsh
+   jupytext --sync notebooks/experiments/00_baseline.ipynb
+   jupytext --sync notebooks/experiments/*.ipynb
+   ```
+   Änderungen in .ipynb und .py werden so abgeglichen.
 
 # Colab
 - create new Notebook
 - Runtime → Change runtime → GPU
-- !git clone https://github.com/USER/project.git
+- !git clone https://github.com/gjo-se/images-multiclass.git
 - %cd project
 - !pip install -r requirements.txt
 - Start Training:
   - !python src/train.py
+
+# Data
+- python src/train.py
+- Wo liegen die Daten? (lokal, colab?)
+- colab stellt kostenlos nur 100GB zur Verfügung
+- es scheint Datensets zu geben: Food Images (Food-101)
+import kagglehub
+path = kagglehub.dataset_download("kmader/food41")
+- belastet dieses Datenset dann meinen Drive
+- wo in colab werden meine Daten gespeichert
 
 # Notebooks
 - Auswertung
