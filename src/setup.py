@@ -33,20 +33,8 @@ class SetupEnvironment:
     def print_last_run_notebook():
         print(f"Notebook last run (end-to-end): {datetime.datetime.now()}")
 
-    @staticmethod
+    # @staticmethod
     # def install_requirements(requirements_path="../../requirements.txt"):
     #     subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     #     subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", requirements_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    # Ausführen, wenn du in Google Colab arbeitest:
-    # try:
-    #     import google.colab
-    #     IN_COLAB = True
-    # except ImportError:
-    #     IN_COLAB = False
-    #
-    # if IN_COLAB:
-    #     from google.colab import drive
-    #     drive.mount('/content/drive')
-    #     !pip
-    #     install - r / content / drive / MyDrive / PFAD / ZU / requirements.txt

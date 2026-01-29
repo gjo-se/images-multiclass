@@ -28,6 +28,42 @@
 #
 
 # %%
+import os
+import subprocess
+
+# %% [markdown]
+# ## Clone git on Colab
+
+# %%
+try:
+    import google.colab
+    IN_COLAB = True
+except ImportError:
+    IN_COLAB = False
+if IN_COLAB:
+
+    repo_url = "https://github.com/gjo-se/images-multiclass.git"
+    target_dir = "/content"
+    notebook_dir = "notebooks/experiments/"
+
+    if not os.path.exists(os.path.join(target_dir, "src")):
+        print(f"Cloning repository {repo_url} to {target_dir}/tmp_clone ...")
+        subprocess.check_call(["git", "clone", repo_url, f"{target_dir}/tmp_clone"])
+        for item in os.listdir(f"{target_dir}/tmp_clone"):
+            subprocess.check_call(["mv", f"{target_dir}/tmp_clone/{item}", target_dir])
+        subprocess.check_call(["rm", "-rf", f"{target_dir}/tmp_clone"])
+    else:
+        print(f"Projekt bereits in {target_dir} vorhanden.")
+
+    os.chdir(os.path.join(target_dir, notebook_dir))
+    print(f"Changed working directory to {os.getcwd()}")
+else:
+    print("clone_and_cd_repo() wird nur auf Google Colab ausgeführt.")
+
+# %% [markdown]
+# ## Setup
+
+# %%
 from src.setup import SetupEnvironment
 
 SetupEnvironment();
