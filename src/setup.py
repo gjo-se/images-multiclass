@@ -1,6 +1,7 @@
 import os
 import random
 import numpy as np
+import datetime
 import tensorflow as tf
 from src.config import Config
 import subprocess
@@ -11,6 +12,7 @@ class SetupEnvironment:
         self.seed = Config().seed
         self.install_requirements()
         self.set_seed(self.seed)
+        self.print_last_run_notebook()
         self.print_tf_version()
 
     @staticmethod
@@ -26,6 +28,10 @@ class SetupEnvironment:
     @staticmethod
     def print_tf_version():
         print('TensorFlow Version:', tf.__version__)
+
+    @staticmethod
+    def print_last_run_notebook():
+        print(f"Notebook last run (end-to-end): {datetime.datetime.now()}")
 
     @staticmethod
     def install_requirements(requirements_path="../../requirements.txt"):
