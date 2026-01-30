@@ -102,15 +102,14 @@ eda.show_data_dir()
 eda.show_sample_classes()
 
 
+# %%
+with SuppressTFLogs():
+    eda.show_class_distribution("train");
+    eda.show_class_distribution("validation");
+
+
 # %% [markdown]
 # ### Sample Group
-
-# %%
-
-
-
-# %% [markdown]
-# ### One Example
 
 # %%
 import tensorflow as tf
@@ -148,18 +147,7 @@ import tensorflow_datasets as tfds
 #         plt.axis("off")
 #     plt.show()
 
-# Klassenverteilung analysieren
-train_raw = tfds.load("food101", split="train", as_supervised=True)
-labels = []
-for _, label in train_raw:
-    labels.append(label.numpy())
-labels = np.array(labels)
-plt.figure(figsize=(12, 4))
-plt.hist(labels, bins=len(class_names))
-plt.title("Klassenverteilung im Trainingsdatensatz")
-plt.xlabel("Klasse")
-plt.ylabel("Anzahl Bilder")
-plt.show()
+
 
 
 # %% [markdown]

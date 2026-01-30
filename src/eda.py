@@ -1,4 +1,9 @@
+import matplotlib.pyplot as plt
+import os
 import pandas as pd
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # soll oberhalb TF Import stehen
+import tensorflow as tf
 
 class EDA:
     def __init__(self, dataset):
@@ -47,24 +52,17 @@ class EDA:
 
         return pd.DataFrame(list(info_dict.items()), columns=["Attribut", "Wert"])
 
-    def show_example_classes(self, n=10):
-        if self.class_names is not None:
-            print(f"Example Classes: {self.class_names[:n]}")
-        else:
-            print("Keine Klassennamen geladen.")
-
-    def show_class_distribution(self, split="train"):
-        import matplotlib.pyplot as plt
-        import numpy as np
-        import tensorflow_datasets as tfds
-        ds = tfds.load("food101", split=split, as_supervised=True)
-        labels = [label.numpy() for _, label in ds]
-        labels = np.array(labels)
-        plt.figure(figsize=(12, 4))
-        plt.hist(labels, bins=len(self.class_names))
+    def show_class_distribution(self, split="train", figsize=(16, 6)):
+        ds = self.dataset.get_train_ds() if split == "train" else self.dataset.get_test_ds()
+        labels = [label for _, label in ds]
+        labels = tf.stack(labels)
+        bincount = tf.math.bincount(labels, minlength=len(self.class_names)).numpy()
+        plt.figure(figsize=figsize)
+        plt.bar(range(len(self.class_names)), bincount, color="#1f77b4", edgecolor="black", width=0.8)
         plt.title(f"Klassenverteilung im {split}-Datensatz")
         plt.xlabel("Klasse")
         plt.ylabel("Anzahl Bilder")
+        plt.tight_layout()
         plt.show()
 
     def show_image_shapes(self, n=100, split="train"):
