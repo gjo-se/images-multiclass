@@ -92,19 +92,21 @@ eda = EDA(ds)
 # ### Dataset
 
 # %%
-eda.show_features()
-eda.show_splits()
-eda.show_data_dir()
-
 features_dict = eda.show_features_dict()
 features_dict
 
+# %%
+eda.show_features()
+eda.show_splits()
+eda.show_data_dir()
+eda.show_sample_classes()
+
 
 # %% [markdown]
-# ### Example Classes
+# ### Sample Group
 
 # %%
-ds.print_example_classes()
+
 
 
 # %% [markdown]

@@ -16,13 +16,20 @@ class EDA:
         for split_name, split_info in self.dataset.get_ds_info().splits.items():
             print(f"  {split_name}: {split_info}")
 
+    def show_sample_classes(self, _feature_name='label', _count=10):
+        if self.ds_info is None:
+            print("ds_info ist nicht geladen.")
+            return
+        # class_names = self.ds_info.features[_feature_name].names
+        print("\nSample Classes:")
+        print(f"  {self.ds_info.features[_feature_name].names[:_count]}")
+
     def show_data_dir(self):
-        ds_info = self.dataset.get_ds_info()
-        if ds_info is None:
+        if self.ds_info is None:
             print("Kein ds_info geladen.")
             return
         print("\nData Dir:")
-        print(f"  {ds_info.data_dir}")
+        print(f"  {self.ds_info.data_dir}")
 
     def show_features_dict(self):
         ds_info = self.dataset.get_ds_info()

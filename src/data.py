@@ -55,13 +55,6 @@ class Dataset:
             return self.ds_info.features[_feature_name].names
         return None
 
-    def print_example_classes(self, _feature_name = 'label', _count=10):
-        if self.ds_info is not None:
-            class_names = self.get_class_names()
-            print(f"Example Classes: {class_names[:_count]}")
-        else:
-            print("ds_info ist nicht geladen.")
-
     # def _preprocess(self, image, label):
     #     image = tf.cast(image, tf.float32) / 255.0
     #     return image, label
