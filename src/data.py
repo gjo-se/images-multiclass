@@ -45,9 +45,26 @@ class Dataset:
     def get_test_ds(self):
         return self.test_ds
 
-    def _preprocess(self, image, label):
-        image = tf.cast(image, tf.float32) / 255.0
-        return image, label
+    def get_features_dict(self):
+        if self.ds_info is not None:
+            return dict(self.ds_info.features)
+        return None
+
+    def get_class_names(self, _feature_name='label'):
+        if self.ds_info is not None:
+            return self.ds_info.features[_feature_name].names
+        return None
+
+    def print_example_classes(self, _feature_name = 'label', _count=10):
+        if self.ds_info is not None:
+            class_names = self.get_class_names()
+            print(f"Example Classes: {class_names[:_count]}")
+        else:
+            print("ds_info ist nicht geladen.")
+
+    # def _preprocess(self, image, label):
+    #     image = tf.cast(image, tf.float32) / 255.0
+    #     return image, label
 
         # train_ds = train_ds.map(self._preprocess, num_parallel_calls=tf.data.AUTOTUNE)
         # train_ds = train_ds.shuffle(10_000).batch(self.batch_size).prefetch(tf.data.AUTOTUNE)

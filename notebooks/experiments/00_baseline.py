@@ -27,6 +27,11 @@
 # %%
 import os
 import subprocess
+from src.data import Dataset
+from src.eda import EDA
+from src.log import SuppressTFLogs
+from src.setup import Environment
+
 
 # %% [markdown]
 # ## Clone git on Colab
@@ -61,8 +66,6 @@ else:
 # ## Setup
 
 # %%
-from src.setup import Environment
-
 Environment().setup();
 
 
@@ -74,38 +77,74 @@ Environment().setup();
 # ## Load Dataset
 
 # %%
-from src.data import Dataset
-
 DATASET_NAME = "food101"
-Dataset().load_dataset(DATASET_NAME);
+ds = Dataset()
+ds.load_dataset(DATASET_NAME, _only_on_colab=False);
 
 
 # %% [markdown]
-# ## Explore Dataset
+# ## Explore Data
+
+# %%
+eda = EDA(ds)
+
+# %% [markdown]
+# ### Dataset
+
+# %%
+eda.show_features()
+eda.show_splits()
+eda.show_data_dir()
+
+features_dict = eda.show_features_dict()
+features_dict
+
+
+# %% [markdown]
+# ### Example Classes
+
+# %%
+ds.print_example_classes()
+
+
+# %% [markdown]
+# ### One Example
+
+# %%
+import tensorflow as tf
+with SuppressTFLogs():
+    train_one_sample = ds.get_train_ds().take(1)
+
+for image, label in train_one_sample:
+  print(f"""
+  Shape: {image.shape}
+  dtype: {image.dtype}
+  Class name tensor: {label}
+  Class name string: {ds.get_class_names()[label.numpy()]}
+  Min: {tf.reduce_min(image)}
+  Max: {tf.reduce_max(image)}
+        """)
+
+import matplotlib.pyplot as plt
+plt.imshow(image)
+plt.title(ds.get_class_names()[label.numpy()]) # add title to image by indexing on class_names list
+plt.axis(False);
 
 # %%
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow_datasets as tfds
 
-# Lade die ds_info für Metadaten
-_, _, ds_info = get_datasets(batch_size=1)
-
-# Klassen anzeigen
-class_names = ds_info.features['label'].names
-print(f"Anzahl Klassen: {len(class_names)}")
-print(f"Beispielklassen: {class_names[:10]}")
-
-# Beispielbilder visualisieren
-train_ds, _, _ = get_datasets(batch_size=9)
-for images, labels in train_ds.take(1):
-    plt.figure(figsize=(10, 10))
-    for i in range(9):
-        ax = plt.subplot(3, 3, i + 1)
-        plt.imshow(images[i].numpy())
-        plt.title(class_names[labels[i].numpy()])
-        plt.axis("off")
-    plt.show()
+# Mehrere Bilder als Batch visualisieren - nach preprocess
+# batch_sample = ds.get_train_ds().batch(9).take(1)
+# for images, labels in batch_sample:
+#     plt.figure(figsize=(10, 10))
+#     for i in range(9):
+#         ax = plt.subplot(3, 3, i + 1)
+#         plt.imshow(images[i].numpy())
+#         plt.title(ds.get_class_names()[labels[i].numpy()])
+#         plt.axis("off")
+#     plt.show()
 
 # Klassenverteilung analysieren
 train_raw = tfds.load("food101", split="train", as_supervised=True)
@@ -120,14 +159,6 @@ plt.xlabel("Klasse")
 plt.ylabel("Anzahl Bilder")
 plt.show()
 
-# Bildgrößen prüfen
-shapes = []
-for image, _ in train_raw.take(100):
-    shapes.append(image.shape)
-shapes = np.array(shapes)
-print(f"Beispiel-Bildgrößen (erste 10): {shapes[:10]}")
-print(f"Minimale Bildgröße: {shapes.min(axis=0)}")
-print(f"Maximale Bildgröße: {shapes.max(axis=0)}")
 
 # %% [markdown]
 # # Modellierung

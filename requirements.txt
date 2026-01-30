@@ -5,3 +5,4 @@ matplotlib
 tensorflow
 protobuf
 tensorflow_datasets
+pandas
