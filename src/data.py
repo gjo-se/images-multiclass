@@ -1,25 +1,47 @@
 import tensorflow as tf
+import tensorflow_datasets as tfds
+import logging
 
-def get_datasets(batch_size):
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+class Dataset:
+    def __init__(self):
+        self.ds_info = None
+        self.train_ds = None
+        self.test_ds = None
+        self.batch_size = None
 
-    x_train = x_train.astype("float32") / 255.0
-    x_test = x_test.astype("float32") / 255.0
+    def load_dataset(self, _name, _split = ["train", "validation"], _shuffle_files = True, _as_supervised = True, _with_info = True, _show_progress = False):
+        # lokal: ~/tensorflow_datasets/food101/2.0.0
+        # colab: /content/tensorflow_datasets/food101/2.0.0
 
-    x_train = x_train[..., None]
-    x_test = x_test[..., None]
+        if not _show_progress:
+            logging.getLogger("tensorflow").setLevel(logging.ERROR)
+            logging.getLogger("tensorflow_datasets").setLevel(logging.ERROR)
 
-    train_ds = (
-        tf.data.Dataset.from_tensor_slices((x_train, y_train))
-        .shuffle(10_000)
-        .batch(batch_size)
-        .prefetch(tf.data.AUTOTUNE)
-    )
+        (train_ds, test_ds), ds_info = tfds.load(
+            name = _name,
+            split = _split,
+            shuffle_files = _shuffle_files,
+            as_supervised = _as_supervised,
+            with_info = _with_info,
+        )
+        self.ds_info = ds_info
+        self.train_ds = train_ds
+        self.test_ds = test_ds
 
-    test_ds = (
-        tf.data.Dataset.from_tensor_slices((x_test, y_test))
-        .batch(batch_size)
-        .prefetch(tf.data.AUTOTUNE)
-    )
+    def get_ds_info(self):
+        return self.ds_info
 
-    return train_ds, test_ds
+    def get_train_ds(self):
+        return self.train_ds
+
+    def get_test_ds(self):
+        return self.test_ds
+
+    def _preprocess(self, image, label):
+        image = tf.cast(image, tf.float32) / 255.0
+        return image, label
+
+        # train_ds = train_ds.map(self._preprocess, num_parallel_calls=tf.data.AUTOTUNE)
+        # train_ds = train_ds.shuffle(10_000).batch(self.batch_size).prefetch(tf.data.AUTOTUNE)
+        # test_ds = test_ds.map(self._preprocess, num_parallel_calls=tf.data.AUTOTUNE)
+        # test_ds = test_ds.batch(self.batch_size).prefetch(tf.data.AUTOTUNE)

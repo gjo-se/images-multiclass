@@ -4,3 +4,4 @@ numpy
 matplotlib
 tensorflow
 protobuf
+tensorflow_datasets

@@ -28,26 +28,8 @@ Um Jupyter-Notebooks (.ipynb) und Python-Skripte (.py) synchron zu halten, wird 
 # Colab
 - create new Notebook
 - Runtime → Change runtime → GPU
-- !git clone https://github.com/gjo-se/images-multiclass.git
-- %cd project
-- !pip install -r requirements.txt
 - Start Training:
   - !python src/train.py
-
-# Data
-- python src/train.py
-- Wo liegen die Daten? (lokal, colab?)
-- colab stellt kostenlos nur 100GB zur Verfügung
-- es scheint Datensets zu geben: Food Images (Food-101)
-import kagglehub
-path = kagglehub.dataset_download("kmader/food41")
-- belastet dieses Datenset dann meinen Drive
-- wo in colab werden meine Daten gespeichert
-
-# Notebooks
-- Auswertung
-- Visualisierung
-- keine Training
 
 # Best Practices klären
 ✅ DO
