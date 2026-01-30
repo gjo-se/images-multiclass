@@ -7,13 +7,24 @@ from src.config import Config
 import subprocess
 import sys
 
-class SetupEnvironment:
+class Environment:
     def __init__(self):
         self.seed = Config().seed
+
+    def setup(self):
         # self.install_requirements()
         self.set_seed(self.seed)
         self.print_last_run_notebook()
         self.print_tf_version()
+
+    @staticmethod
+    def is_colab():
+        try:
+            import google.colab
+            is_colab = True
+        except ImportError:
+            is_colab = False
+        return is_colab
 
     @staticmethod
     def set_seed(_seed):

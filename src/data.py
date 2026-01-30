@@ -1,6 +1,7 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import logging
+from src.setup import Environment
 
 class Dataset:
     def __init__(self):
@@ -9,13 +10,18 @@ class Dataset:
         self.test_ds = None
         self.batch_size = None
 
-    def load_dataset(self, _name, _split = ["train", "validation"], _shuffle_files = True, _as_supervised = True, _with_info = True, _show_progress = False):
+    def load_dataset(self, _name, _split = ["train", "validation"], _shuffle_files = True, _as_supervised = True, _with_info = True, _show_progress = False, _only_on_colab = True):
         # lokal: ~/tensorflow_datasets/food101/2.0.0
         # colab: /content/tensorflow_datasets/food101/2.0.0
+
+        if _only_on_colab and not Environment.is_colab():
+            return None
 
         if not _show_progress:
             logging.getLogger("tensorflow").setLevel(logging.ERROR)
             logging.getLogger("tensorflow_datasets").setLevel(logging.ERROR)
+
+        print(f"Load dataset https://www.tensorflow.org/datasets/catalog/{_name}")
 
         (train_ds, test_ds), ds_info = tfds.load(
             name = _name,
@@ -27,6 +33,8 @@ class Dataset:
         self.ds_info = ds_info
         self.train_ds = train_ds
         self.test_ds = test_ds
+
+        return train_ds, test_ds, ds_info
 
     def get_ds_info(self):
         return self.ds_info

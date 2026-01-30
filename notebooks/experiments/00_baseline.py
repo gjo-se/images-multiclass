@@ -21,9 +21,6 @@
 #
 
 # %% [markdown]
-#
-
-# %% [markdown]
 # # Imports & Setup
 #
 
@@ -64,28 +61,27 @@ else:
 # ## Setup
 
 # %%
-from src.setup import SetupEnvironment
+from src.setup import Environment
 
-SetupEnvironment();
+Environment().setup();
 
 
 # %% [markdown]
-# # Datenvorbereitung
-# Laden und Vorverarbeiten der Daten
-# Explorative Datenanalyse (EDA) mit Visualisierungen
-# Aufteilen in Trainings-, Validierungs- und Testdaten
+# # Dataset
 #
 
 # %% [markdown]
-# # Explorative Datenanalyse (EDA) für Food-101
-#
+# ## Load Dataset
 
 # %%
 from src.data import Dataset
 
-DATASET_NAME = "food101" # https://www.tensorflow.org/datasets/catalog/food101
+DATASET_NAME = "food101"
 Dataset().load_dataset(DATASET_NAME);
 
+
+# %% [markdown]
+# ## Explore Dataset
 
 # %%
 import matplotlib.pyplot as plt
