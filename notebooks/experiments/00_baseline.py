@@ -21,19 +21,6 @@
 #
 
 # %% [markdown]
-# # Imports & Setup
-#
-
-# %%
-import os
-import subprocess
-from src.data import Dataset
-from src.eda import EDA
-from src.log import SuppressTFLogs
-from src.setup import Environment
-
-
-# %% [markdown]
 # ## Clone git on Colab
 
 # %%
@@ -61,6 +48,19 @@ if IN_COLAB:
     print(f"Changed working directory to {os.getcwd()}")
 else:
     print("clone_and_cd_repo() wird nur auf Google Colab ausgeführt.")
+
+# %% [markdown]
+# # Imports & Setup
+#
+
+# %%
+import os
+import subprocess
+from src.data import Dataset
+from src.eda import EDA
+from src.log import SuppressTFLogs
+from src.setup import Environment
+
 
 # %% [markdown]
 # ## Setup
