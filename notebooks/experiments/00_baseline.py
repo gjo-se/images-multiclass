@@ -51,9 +51,19 @@ if IN_COLAB:
     print(f"Changed working directory to {os.getcwd()}")
 
     from google.colab import drive
-    if os.path.ismount('/content/drive'):
-      drive.flush_and_unmount()
-    drive.mount('/content/drive')
+
+    mount_dir = '/content/drive'
+    if os.path.ismount(mount_dir):
+        drive.flush_and_unmount()
+
+    if os.path.exists(mount_dir) and os.listdir(mount_dir):
+        # Falls noch Reste vorhanden sind, alles löschen
+        import shutil
+        shutil.rmtree(mount_dir)
+        os.makedirs(mount_dir)
+
+    drive.mount(mount_dir)
+
     DATA_DIR = "/content/drive/MyDrive/datasets/tfds_cache"
     os.makedirs(DATA_DIR, exist_ok=True)
 
