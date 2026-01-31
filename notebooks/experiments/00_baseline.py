@@ -112,32 +112,7 @@ eda.show_sample_classes()
 # ### Sample Group
 
 # %%
-eda.show_random_samples(_count=25)
-
-# %%
-import matplotlib.pyplot as plt
-plt.imshow(image)
-plt.title(ds.get_class_names()[label.numpy()]) # add title to image by indexing on class_names list
-plt.axis(False);
-
-# %%
-import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow_datasets as tfds
-
-# Mehrere Bilder als Batch visualisieren - nach preprocess
-batch_sample = ds.get_train_ds().batch(9).take(1)
-for images, labels in batch_sample:
-    plt.figure(figsize=(10, 10))
-    for i in range(9):
-        ax = plt.subplot(3, 3, i + 1)
-        plt.imshow(images[i].numpy())
-        plt.title(ds.get_class_names()[labels[i].numpy()])
-        plt.axis("off")
-    plt.show()
-
-
-
+eda.show_random_samples(_count=9)
 
 # %% [markdown]
 # # Modellierung
@@ -177,5 +152,7 @@ for images, labels in batch_sample:
 # %% [markdown]
 # # Anhang
 # Zusätzliche Visualisierungen, Code-Snippets oder Referenzen
+
+# %%
 
 # %%

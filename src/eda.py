@@ -80,7 +80,7 @@ class EDA:
     #     print(f"Minimale Bildgröße: {shapes.min(axis=0)}")
     #     print(f"Maximale Bildgröße: {shapes.max(axis=0)}")
 
-    def show_random_samples(self, _count=9, split="train", buffer_size=10000, target_size=(224, 224)):
+    def show_random_samples(self, _count=9, split="train", buffer_size=10000, target_size=(224, 224), show_images=True):
         ds = self.dataset.get_train_ds() if split == "train" else self.dataset.get_test_ds()
         ds = ds.map(lambda img, lbl: Dataset.preprocess(img, lbl, target_size), num_parallel_calls=tf.data.AUTOTUNE)
         ds = ds.shuffle(buffer_size=buffer_size, reshuffle_each_iteration=True).batch(_count).take(1)
@@ -95,5 +95,12 @@ class EDA:
                     "Min": int(tf.reduce_min(image).numpy()),
                     "Max": int(tf.reduce_max(image).numpy())
                 })
-
+            if show_images:
+                plt.figure(figsize=(10, 10))
+                for i in range(_count):
+                    ax = plt.subplot(3, 3, i + 1)
+                    plt.imshow(batch_images[i].numpy().astype("uint8"))
+                    plt.title(self.class_names[batch_labels[i].numpy()])
+                    plt.axis("off")
+                plt.show()
         return pd.DataFrame(data)
