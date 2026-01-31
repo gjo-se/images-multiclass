@@ -15,7 +15,7 @@
 
 # %% [markdown]
 # # Einleitung
-# - <a href="https://colab.research.google.com/github/gjo-se/images-multiclass/blob/master/notebooks/experiments/00_baseline.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+# - <a href="https://colab.research.google.com/github/gjo-se/images-multiclass/blob/master/notebooks/experiments/00_baseline.ipynb?flush_cache=true" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 # - Ziel des Notebooks und des Experiments Kontext und Motivation
 # - ganz zum Schluss per ChatGPT erstellen
 #
@@ -24,6 +24,9 @@
 # ## Clone git on Colab
 
 # %%
+import os
+import subprocess
+
 try:
     import google.colab
     IN_COLAB = True
@@ -54,8 +57,6 @@ else:
 #
 
 # %%
-import os
-import subprocess
 from src.data import Dataset
 from src.eda import EDA
 from src.log import SuppressTFLogs
