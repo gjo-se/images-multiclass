@@ -61,6 +61,8 @@ else:
     DATA_DIR = None
     print("clone_and_cd_repo() wird nur auf Google Colab ausgeführt.")
 
+print(f"DATA_DIR: {DATA_DIR}")
+
 # %% [markdown]
 # # Imports & Setup
 #

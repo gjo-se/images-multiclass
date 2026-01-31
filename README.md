@@ -1,7 +1,12 @@
 # GIT einrichten
 - lokal
 - remote
-
+- Sourcetree push problem: 
+   ```bash
+  git push origin master
+  username: 
+  pw: token
+   ```
 # Sync ipynb <=> py
 
 Um Jupyter-Notebooks (.ipynb) und Python-Skripte (.py) synchron zu halten, wird [Jupytext](https://github.com/mwouts/jupytext) verwendet:
