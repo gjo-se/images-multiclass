@@ -22,6 +22,7 @@ class Dataset:
             logging.getLogger("tensorflow_datasets").setLevel(logging.ERROR)
 
         print(f"Load dataset https://www.tensorflow.org/datasets/catalog/{_name}")
+        
 
         (train_ds, test_ds), ds_info = tfds.load(
             name = _name,
