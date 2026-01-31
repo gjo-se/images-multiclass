@@ -10,7 +10,7 @@ class Dataset:
         self.test_ds = None
         self.batch_size = None
 
-    def load_dataset(self, _name, _split = ["train", "validation"], _shuffle_files = True, _as_supervised = True, _with_info = True, _show_progress = False, _only_on_colab = True):
+    def load_dataset(self, _name, _split = ["train", "validation"], _shuffle_files = True, _as_supervised = True, _with_info = True, _show_progress = False, _only_on_colab = True, _data_dir = None):
         # lokal: ~/tensorflow_datasets/food101/2.0.0
         # colab: /content/tensorflow_datasets/food101/2.0.0
 
@@ -25,6 +25,7 @@ class Dataset:
 
         (train_ds, test_ds), ds_info = tfds.load(
             name = _name,
+            data_dir = _data_dir,
             split = _split,
             shuffle_files = _shuffle_files,
             as_supervised = _as_supervised,

@@ -21,7 +21,7 @@
 #
 
 # %% [markdown]
-# ## Clone git on Colab
+# ## Prepare Colab
 
 # %%
 import os
@@ -49,7 +49,13 @@ if IN_COLAB:
 
     os.chdir(os.path.join(target_dir, notebook_dir))
     print(f"Changed working directory to {os.getcwd()}")
+
+    drive.mount('/content/drive')
+    DATA_DIR = "/content/drive/MyDrive/datasets/tfds_cache"
+    os.makedirs(DATA_DIR, exist_ok=True)
+
 else:
+    DATA_DIR = None
     print("clone_and_cd_repo() wird nur auf Google Colab ausgeführt.")
 
 # %% [markdown]
@@ -80,14 +86,14 @@ Environment().setup();
 # %%
 DATASET_NAME = "food101"
 ds = Dataset()
-ds.load_dataset(DATASET_NAME, _only_on_colab=False);
-
+ds.load_dataset(DATASET_NAME, _only_on_colab=False, _data_dir=DATA_DIR)
 
 # %% [markdown]
 # ## Explore Data
 
 # %%
 eda = EDA(ds)
+
 
 # %% [markdown]
 # ### Dataset
@@ -102,18 +108,17 @@ eda.show_splits()
 eda.show_data_dir()
 eda.show_sample_classes()
 
-
 # %%
 # with SuppressTFLogs():
 #     eda.show_class_distribution("train");
 #     eda.show_class_distribution("validation");
-
 
 # %% [markdown]
 # ### Sample Group
 
 # %%
 eda.show_random_samples(_count=9)
+
 
 # %% [markdown]
 # # Modellierung
@@ -153,6 +158,10 @@ eda.show_random_samples(_count=9)
 # %% [markdown]
 # # Anhang
 # Zusätzliche Visualisierungen, Code-Snippets oder Referenzen
+
+# %%
+
+# %%
 
 # %%
 
