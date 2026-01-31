@@ -103,29 +103,18 @@ eda.show_sample_classes()
 
 
 # %%
-with SuppressTFLogs():
-    eda.show_class_distribution("train");
-    eda.show_class_distribution("validation");
+# with SuppressTFLogs():
+#     eda.show_class_distribution("train");
+#     eda.show_class_distribution("validation");
 
 
 # %% [markdown]
 # ### Sample Group
 
 # %%
-import tensorflow as tf
-with SuppressTFLogs():
-    train_one_sample = ds.get_train_ds().take(1)
+eda.show_random_samples(_count=25)
 
-for image, label in train_one_sample:
-  print(f"""
-  Shape: {image.shape}
-  dtype: {image.dtype}
-  Class name tensor: {label}
-  Class name string: {ds.get_class_names()[label.numpy()]}
-  Min: {tf.reduce_min(image)}
-  Max: {tf.reduce_max(image)}
-        """)
-
+# %%
 import matplotlib.pyplot as plt
 plt.imshow(image)
 plt.title(ds.get_class_names()[label.numpy()]) # add title to image by indexing on class_names list
@@ -137,15 +126,15 @@ import numpy as np
 import tensorflow_datasets as tfds
 
 # Mehrere Bilder als Batch visualisieren - nach preprocess
-# batch_sample = ds.get_train_ds().batch(9).take(1)
-# for images, labels in batch_sample:
-#     plt.figure(figsize=(10, 10))
-#     for i in range(9):
-#         ax = plt.subplot(3, 3, i + 1)
-#         plt.imshow(images[i].numpy())
-#         plt.title(ds.get_class_names()[labels[i].numpy()])
-#         plt.axis("off")
-#     plt.show()
+batch_sample = ds.get_train_ds().batch(9).take(1)
+for images, labels in batch_sample:
+    plt.figure(figsize=(10, 10))
+    for i in range(9):
+        ax = plt.subplot(3, 3, i + 1)
+        plt.imshow(images[i].numpy())
+        plt.title(ds.get_class_names()[labels[i].numpy()])
+        plt.axis("off")
+    plt.show()
 
 
 

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+from src.data import Dataset
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # soll oberhalb TF Import stehen
 import tensorflow as tf
@@ -64,17 +65,35 @@ class EDA:
         plt.ylabel("Anzahl Bilder")
         plt.tight_layout()
         plt.show()
+    #
+    # def show_image_shapes(self, n=100, split="train"):
+    #     import tensorflow_datasets as tfds
+    #     import numpy as np
+    #     ds = tfds.load("food101", split=split, as_supervised=True)
+    #     shapes = []
+    #     for i, (image, _) in enumerate(ds):
+    #         if i >= n:
+    #             break
+    #         shapes.append(image.shape)
+    #     shapes = np.array(shapes)
+    #     print(f"Beispiel-Bildgrößen (erste 10): {shapes[:10]}")
+    #     print(f"Minimale Bildgröße: {shapes.min(axis=0)}")
+    #     print(f"Maximale Bildgröße: {shapes.max(axis=0)}")
 
-    def show_image_shapes(self, n=100, split="train"):
-        import tensorflow_datasets as tfds
-        import numpy as np
-        ds = tfds.load("food101", split=split, as_supervised=True)
-        shapes = []
-        for i, (image, _) in enumerate(ds):
-            if i >= n:
-                break
-            shapes.append(image.shape)
-        shapes = np.array(shapes)
-        print(f"Beispiel-Bildgrößen (erste 10): {shapes[:10]}")
-        print(f"Minimale Bildgröße: {shapes.min(axis=0)}")
-        print(f"Maximale Bildgröße: {shapes.max(axis=0)}")
+    def show_random_samples(self, _count=9, split="train", buffer_size=10000, target_size=(224, 224)):
+        ds = self.dataset.get_train_ds() if split == "train" else self.dataset.get_test_ds()
+        ds = ds.map(lambda img, lbl: Dataset.preprocess(img, lbl, target_size), num_parallel_calls=tf.data.AUTOTUNE)
+        ds = ds.shuffle(buffer_size=buffer_size, reshuffle_each_iteration=True).batch(_count).take(1)
+        data = []
+        for batch_images, batch_labels in ds:
+            for image, label in zip(batch_images, batch_labels):
+                data.append({
+                    "Shape": tuple(image.shape),
+                    "dtype": image.dtype.name,
+                    "Class name tensor": int(label.numpy()),
+                    "Class name string": self.class_names[label.numpy()],
+                    "Min": int(tf.reduce_min(image).numpy()),
+                    "Max": int(tf.reduce_max(image).numpy())
+                })
+
+        return pd.DataFrame(data)

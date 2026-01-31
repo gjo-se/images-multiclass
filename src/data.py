@@ -55,9 +55,10 @@ class Dataset:
             return self.ds_info.features[_feature_name].names
         return None
 
-    # def _preprocess(self, image, label):
-    #     image = tf.cast(image, tf.float32) / 255.0
-    #     return image, label
+    @staticmethod
+    def preprocess(image, label, target_size=(224, 224)):
+        image = tf.image.resize(image, target_size)
+        return image, label
 
         # train_ds = train_ds.map(self._preprocess, num_parallel_calls=tf.data.AUTOTUNE)
         # train_ds = train_ds.shuffle(10_000).batch(self.batch_size).prefetch(tf.data.AUTOTUNE)
