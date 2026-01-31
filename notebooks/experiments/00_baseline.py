@@ -50,6 +50,9 @@ if IN_COLAB:
     os.chdir(os.path.join(target_dir, notebook_dir))
     print(f"Changed working directory to {os.getcwd()}")
 
+    from google.colab import drive
+    if os.path.ismount('/content/drive'):
+      drive.flush_and_unmount()
     drive.mount('/content/drive')
     DATA_DIR = "/content/drive/MyDrive/datasets/tfds_cache"
     os.makedirs(DATA_DIR, exist_ok=True)
@@ -109,9 +112,9 @@ eda.show_data_dir()
 eda.show_sample_classes()
 
 # %%
-# with SuppressTFLogs():
-#     eda.show_class_distribution("train");
-#     eda.show_class_distribution("validation");
+with SuppressTFLogs():
+    eda.show_class_distribution("train");
+    eda.show_class_distribution("validation");
 
 # %% [markdown]
 # ### Sample Group
