@@ -136,6 +136,14 @@ eda.show_random_samples(_count=9)
 
 
 # %% [markdown]
+# ## Preprocess Data
+
+# %%
+ds.preprocess_data("train")
+ds.preprocess_data("test")
+
+
+# %% [markdown]
 # # Modellierung
 # Definition und Visualisierung des Modells
 # Kompilieren des Modells (Loss, Optimizer, Metriken)

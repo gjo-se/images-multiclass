@@ -2,12 +2,15 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 import logging
 from src.setup import Environment
+from src.config import Config
 
 class Dataset:
     def __init__(self):
         self.ds_info = None
         self.train_ds = None
+        self.train_ds_processed = None
         self.test_ds = None
+        self.test_ds_processed = None
         self.batch_size = None
 
     def load_dataset(self, _name, _split = ["train", "validation"], _shuffle_files = True, _as_supervised = True, _with_info = True, _show_progress = False, _only_on_colab = True, _data_dir = None):
@@ -57,11 +60,27 @@ class Dataset:
         return None
 
     @staticmethod
-    def preprocess(image, label, target_size=(224, 224)):
-        image = tf.image.resize(image, target_size)
+    def preprocess_image_size(image, label, target_size=(224, 224)):
+        return tf.image.resize(image, target_size), label
+
+    @staticmethod
+    def preprocess_image_cast(image, label):
+        return tf.cast(image, tf.float32), label
+
+    def preprocess_image(self, image, label):
+        image, label = self.preprocess_image_size(image, label)
+        image, label = self.preprocess_image_cast(image, label)
         return image, label
 
-        # train_ds = train_ds.map(self._preprocess, num_parallel_calls=tf.data.AUTOTUNE)
-        # train_ds = train_ds.shuffle(10_000).batch(self.batch_size).prefetch(tf.data.AUTOTUNE)
-        # test_ds = test_ds.map(self._preprocess, num_parallel_calls=tf.data.AUTOTUNE)
-        # test_ds = test_ds.batch(self.batch_size).prefetch(tf.data.AUTOTUNE)
+    def preprocess_data(self, split="train"):
+        if split == "train" and self.train_ds is not None:
+            self.train_ds_processed = self.train_ds.map(map_func=self.preprocess_image, num_parallel_calls=tf.data.AUTOTUNE)
+            self.train_ds_processed = self.train_ds_processed.shuffle(buffer_size=Config.buffer_size)
+            self.train_ds_processed = self.train_ds_processed.batch(Config.batch_size)
+            self.train_ds_processed = self.train_ds_processed.prefetch(buffer_size=tf.data.AUTOTUNE)
+        elif split == "test" and self.test_ds is not None:
+            self.test_ds_processed = self.test_ds.map(map_func=self.preprocess_image, num_parallel_calls=tf.data.AUTOTUNE)
+            self.test_ds_processed = self.test_ds_processed.batch(Config.batch_size)
+            self.test_ds_processed = self.test_ds_processed.prefetch(buffer_size=tf.data.AUTOTUNE)
+        else:
+            raise ValueError(f"Split '{split}' ist nicht geladen oder existiert nicht.")

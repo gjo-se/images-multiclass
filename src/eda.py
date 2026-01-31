@@ -82,7 +82,7 @@ class EDA:
 
     def show_random_samples(self, _count=9, split="train", buffer_size=10000, target_size=(224, 224), show_images=True):
         ds = self.dataset.get_train_ds() if split == "train" else self.dataset.get_test_ds()
-        ds = ds.map(lambda img, lbl: Dataset.preprocess(img, lbl, target_size), num_parallel_calls=tf.data.AUTOTUNE)
+        ds = ds.map(lambda img, lbl: Dataset.preprocess_image_size(img, lbl, target_size), num_parallel_calls=tf.data.AUTOTUNE)
         ds = ds.shuffle(buffer_size=buffer_size, reshuffle_each_iteration=True).batch(_count).take(1)
         data = []
         for batch_images, batch_labels in ds:
