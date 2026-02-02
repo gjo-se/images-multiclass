@@ -21,7 +21,7 @@
 #
 
 # %% [markdown]
-# ## Prepare Colab
+# ## Colab Setup
 
 # %%
 import os
@@ -33,45 +33,45 @@ try:
 except ImportError:
     IN_COLAB = False
 if IN_COLAB:
+  from google.colab import drive
 
-    repo_url = "https://github.com/gjo-se/images-multiclass.git"
-    target_dir = "/content"
-    notebook_dir = "notebooks/experiments/"
+  REPO_URL = "https://github.com/gjo-se/images-multiclass.git"
+  REPO_NAME = "images-multiclass"
 
-    if not os.path.exists(os.path.join(target_dir, "src")):
-        print(f"Cloning repository {repo_url} to {target_dir}/tmp_clone ...")
-        subprocess.check_call(["git", "clone", repo_url, f"{target_dir}/tmp_clone"])
-        for item in os.listdir(f"{target_dir}/tmp_clone"):
-            subprocess.check_call(["mv", f"{target_dir}/tmp_clone/{item}", target_dir])
-        subprocess.check_call(["rm", "-rf", f"{target_dir}/tmp_clone"])
-    else:
-        print(f"Projekt bereits in {target_dir} vorhanden.")
+  TARGET_DIR = f"/content/{REPO_NAME}"
+  MOUNT_DIR = '/content/drive'
+  DATA_DIR = f"{MOUNT_DIR}/MyDrive/projects/{REPO_NAME}/data"
+  REPO_DATA = f"{TARGET_DIR}/data"
 
-    os.chdir(os.path.join(target_dir, notebook_dir))
-    print(f"Changed working directory to {os.getcwd()}")
+  if not os.path.exists(TARGET_DIR):
+      subprocess.check_call(["git", "clone", REPO_URL, TARGET_DIR])
+  else:
+    print(f"Repository {REPO_NAME} already exists.")
 
-    from google.colab import drive
+  os.chdir(TARGET_DIR)
+  print("Working directory 01:", os.getcwd())
 
-    mount_dir = '/content/drive'
-    if os.path.ismount(mount_dir):
-        drive.flush_and_unmount()
+  if os.path.ismount(MOUNT_DIR):
+      drive.flush_and_unmount()
 
-    if os.path.exists(mount_dir) and os.listdir(mount_dir):
-        # Falls noch Reste vorhanden sind, alles löschen
-        import shutil
-        shutil.rmtree(mount_dir)
-        os.makedirs(mount_dir)
+  drive.mount(MOUNT_DIR)
+  os.makedirs(DATA_DIR, exist_ok=True)
 
-    drive.mount(mount_dir)
+  if os.path.exists(REPO_DATA):
+      subprocess.check_call(["rm", "-rf", REPO_DATA])
+  os.symlink(DATA_DIR, REPO_DATA)
+  print("Symlink:", REPO_DATA, "->", DATA_DIR)
 
-    DATA_DIR = "/content/drive/MyDrive/datasets/tfds_cache"
-    os.makedirs(DATA_DIR, exist_ok=True)
+    # if os.path.exists(mount_dir) and os.listdir(mount_dir):
+    #     # Falls noch Reste vorhanden sind, alles löschen
+    #     import shutil
+    #     shutil.rmtree(mount_dir)
+    #     os.makedirs(mount_dir)
+
 
 else:
-    DATA_DIR = None
-    print("clone_and_cd_repo() wird nur auf Google Colab ausgeführt.")
+    print("Google Colab Setup nur Remote ausgeführt.")
 
-print(f"DATA_DIR: {DATA_DIR}")
 
 # %% [markdown]
 # # Imports & Setup
