@@ -15,7 +15,7 @@
 
 # %% [markdown]
 # # Einleitung
-# - <a href="https://colab.research.google.com/github/gjo-se/images-multiclass/blob/master/notebooks/experiments/00_baseline.ipynb?flush_cache=true" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+# - <a href="https://colab.research.google.com/github/gjo-se/images-multiclass/blob/master/experiments/00_baseline.ipynb?flush_cache=true" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 # - Ziel des Notebooks und des Experiments Kontext und Motivation
 # - ganz zum Schluss per ChatGPT erstellen
 #
@@ -101,7 +101,7 @@ Environment().setup();
 # %%
 DATASET_NAME = "food101"
 ds = Dataset()
-ds.load_dataset(DATASET_NAME, _only_on_colab=False, _data_dir=DATA_DIR)
+ds.load_tfds(DATASET_NAME, _only_on_colab=False, _percent=1)
 
 # %% [markdown]
 # ## Explore Data

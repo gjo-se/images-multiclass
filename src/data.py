@@ -3,6 +3,7 @@ import tensorflow_datasets as tfds
 import logging
 from src.setup import Environment
 from configs.config import Config
+from pathlib import Path
 
 class Dataset:
     def __init__(self):
@@ -13,10 +14,23 @@ class Dataset:
         self.test_ds_processed = None
         self.batch_size = None
 
-    def load_dataset(self, _name, _split = ["train", "validation"], _shuffle_files = True, _as_supervised = True, _with_info = True, _show_progress = False, _only_on_colab = True, _data_dir = None):
-        # lokal: ~/tensorflow_datasets/food101/2.0.0
-        # colab: /content/tensorflow_datasets/food101/2.0.0
+    @staticmethod
+    def get_data_dir():
+        return Path(__file__).resolve().parents[1] / "data"
 
+    @staticmethod
+    def resolve_splits(_split, _percent):
+        if _split is not None:
+            splits = _split
+        else:
+            splits = ["train", "validation"]
+        if _percent < 100:
+            splits =  [f"{s}[:{_percent}%]" for s in splits]
+
+            print(f"Splits: {_percent}%: {splits}")
+        return splits
+
+    def load_tfds(self, _name, _split=None, _percent=100, _shuffle_files=True, _as_supervised=True, _with_info=True, _show_progress=False, _only_on_colab=True):
         if _only_on_colab and not Environment.is_colab():
             return None
 
@@ -24,15 +38,13 @@ class Dataset:
             logging.getLogger("tensorflow").setLevel(logging.ERROR)
             logging.getLogger("tensorflow_datasets").setLevel(logging.ERROR)
 
-        print(f"Load dataset https://www.tensorflow.org/datasets/catalog/{_name}")
-
         (train_ds, test_ds), ds_info = tfds.load(
-            name = _name,
-            data_dir = _data_dir,
-            split = _split,
-            shuffle_files = _shuffle_files,
-            as_supervised = _as_supervised,
-            with_info = _with_info,
+            name=_name,
+            data_dir=str(self.get_data_dir() / "raw"),
+            split=self.resolve_splits(_split, _percent),
+            shuffle_files=_shuffle_files,
+            as_supervised=_as_supervised,
+            with_info=_with_info,
         )
         self.ds_info = ds_info
         self.train_ds = train_ds
