@@ -1,5 +1,5 @@
 import tensorflow as tf
-from config import TrainConfig
+from configs.config import TrainConfig
 from data import get_datasets
 from model import build_model
 

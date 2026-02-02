@@ -1,2 +1,44 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+
+# =========================
+# IDE
+# =========================
+.idea/
+
+# =========================
+# Data (ALLES RAUS)
+# =========================
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/tfrecords/*
+!data/tfrecords/.gitkeep
+data/features/*
+!data/features/.gitkeep
+data/splits/*
+!data/splits/.gitkeep
+!data/splits/*.json
+
+# =========================
+# Model Artifacts
+# =========================
+models/*
+!models/.gitkeep
+models/checkpoints/*
+!models/checkpoints/.gitkeep
+models/logs/*
+!models/logs/.gitkeep
+
+# =========================
+# Misc
+# =========================
 _templates
-src/__pycache__

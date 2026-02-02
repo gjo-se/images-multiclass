@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 import logging
 from src.setup import Environment
-from src.config import Config
+from configs.config import Config
 
 class Dataset:
     def __init__(self):
